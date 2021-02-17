@@ -1,7 +1,10 @@
 package com.sge.sge.service;
 
+import com.sge.sge.domain.Etapa;
+import com.sge.sge.domain.Pessoa;
 import com.sge.sge.repository.EtapaRepository;
 import com.sge.sge.service.dto.EtapaDTO;
+import com.sge.sge.service.dto.PessoaDTO;
 import com.sge.sge.service.mapper.EtapaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,23 +21,24 @@ public class EtapaService {
     private final EtapaMapper etapaMapper;
 
     public List<EtapaDTO> list(){
-        return null;
+        return etapaMapper.toDto(etapaRepository.findAll());
     }
 
     public EtapaDTO getById(Integer id){
-        return null;
+        Etapa etapa = etapaRepository.findById(id).get();
+        return etapaMapper.toDto(etapa);
     }
 
     public EtapaDTO save(EtapaDTO etapaDTO){
-        return null;
+        return etapaMapper.toDto(etapaRepository.save(etapaMapper.toEntity(etapaDTO)));
     }
 
     public EtapaDTO edit(EtapaDTO etapaDTO){
-        return null;
+        return etapaMapper.toDto(etapaRepository.save(etapaMapper.toEntity(etapaDTO)));
     }
 
-    public void delete(Integer Id){
-
+    public void delete(Integer id){
+        etapaRepository.delete(etapaMapper.toEntity(this.getById(id)));
     }
 
 }

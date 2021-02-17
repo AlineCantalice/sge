@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EspacoRepository extends JpaRepository<Espaco, Integer> {
+
+    Espaco getByNome(String nome);
+
 }
