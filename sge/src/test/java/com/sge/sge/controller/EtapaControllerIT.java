@@ -1,8 +1,6 @@
 package com.sge.sge.controller;
 
-import com.sge.sge.builder.EspacoBuilder;
 import com.sge.sge.builder.EtapaBuilder;
-import com.sge.sge.builder.PessoaBuilder;
 import com.sge.sge.domain.Etapa;
 import com.sge.sge.repository.EtapaRepository;
 import com.sge.sge.service.mapper.EtapaMapper;
@@ -69,7 +67,7 @@ public class EtapaControllerIT extends IntTestComum {
     @Test
     public void editTest() throws Exception {
         Etapa etapa = etapaBuilder.construir();
-        etapa.setNumeroEtapa("3");
+        etapa.setNumeroEtapa(1);
 
         getMockMvc().perform(put( "/api/etapas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)

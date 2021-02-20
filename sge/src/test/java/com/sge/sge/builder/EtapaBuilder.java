@@ -36,7 +36,7 @@ public class EtapaBuilder extends ConstrutorDeEntidade<Etapa> {
         Etapa etapa = new Etapa();
         etapa.setPessoa(pessoa);
         etapa.setEspaco(espaco);
-        etapa.setNumeroEtapa("2");
+        etapa.setNumeroEtapa(2);
 
         return etapa;
     }

@@ -22,7 +22,7 @@ public class PessoaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PessoaDTO> getById(@PathVariable Integer id){
+    public ResponseEntity<PessoaDTO> getById(@PathVariable Integer id) throws Exception {
         return ResponseEntity.ok(pessoaService.getById(id));
     }
 
@@ -32,17 +32,17 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<PessoaDTO> save(@RequestBody PessoaDTO pessoaDTO){
+    public ResponseEntity<PessoaDTO> save(@RequestBody PessoaDTO pessoaDTO) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaService.save(pessoaDTO));
     }
 
     @PutMapping
-    public ResponseEntity<PessoaDTO> edit(@RequestBody PessoaDTO pessoaDTO){
+    public ResponseEntity<PessoaDTO> edit(@RequestBody PessoaDTO pessoaDTO) throws Exception {
         return ResponseEntity.ok(pessoaService.edit(pessoaDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PessoaDTO> delete(@PathVariable Integer id){
+    public ResponseEntity<PessoaDTO> delete(@PathVariable Integer id) throws Exception {
         pessoaService.delete(id);
         return ResponseEntity.ok().build();
     }
