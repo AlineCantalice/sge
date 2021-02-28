@@ -40,51 +40,23 @@ public class EtapaService {
     }
 
     public EtapaDTO save(EtapaDTO etapaDTO){
-        List<PessoaDTO> pessoas = pessoaService.list();
-        List<EspacoDTO> espacos = espacoService.list();
-
-        int qtdSala = 0;
-        int qtdCafe = 0;
-
-        for(EspacoDTO espacoDTO : espacos){
-            if(espacoDTO.getSala()){
-                qtdSala++;
-            }else{
-                qtdCafe++;
-            }
-        }
-
-        int qtdPessoas = pessoas.size();
-        int pessoasSala = qtdPessoas / qtdSala;
-
-        Etapa etapa = new Etapa();
-
-        //Preenchendo etapa 1
-        for(int i = 1; i <= etapaDTO.getNumeroEtapa(); i++){
-            for (EspacoDTO espaco : espacos) {
-                if (espaco.getSala() == true) {
-                    int vaga = espaco.getLotacao();
-                    //se a qtd de pessoas for muito pequena para dividir por salas
-                    if(pessoasSala < 5 && vaga > qtdPessoas) {
-                        for (PessoaDTO pessoaDTO : pessoas) {
-                            etapa.setPessoa(pessoaMapper.toEntity(pessoaDTO));
-                            etapa.setEspaco(espacoMapper.toEntity(espaco));
-                            etapa.setNumeroEtapa(i);
-                        }
-                    }
-                    //se a qtd de pessoas for suficiente para dividir por salas
-                    else{
-                        for(PessoaDTO pessoaDTO : pessoas){
-                            while (qtdPessoas > pessoasSala){
-
-                            }
-                        }
-                    }
+        List<Etapa> etapas = new ArrayList<>();
+        List<PessoaDTO> metade = pessoas.subList(0, pessoas.size()/2-1);
+        List<PessoaDTO> outraMetade = pessoas.subList(pessoas.size()/2, pessoas.size()-1);
+        for (int i = 1; i <= 2; i++) {
+            for (EspacoDTO espaco : espacos){
+                if (espaco.getSala() && espaco.getLotacao() > 0 && espaco.getLotacao() <= metade.size()){
+                    etapas.addAll(createEtapa(metade, espaco, i));
+                }
+                if (espaco.getSala() && espaco.getLotacao() > 0 && espaco.getLotacao() <= outraMetade.size()){
+                    etapas.addAll(createEtapa(outraMetade, espaco, i));
                 }
             }
+            for (Etapa etapa : etapas) {
+                etapaMapper.toDto(etapaRepository.save(etapa));
+            }
         }
-
-        return etapaMapper.toDto(etapaRepository.save(etapaMapper.toEntity(etapaDTO)));
+        return etapaMapper.toDto(etapas);
     }
 
     public EtapaDTO edit(EtapaDTO etapaDTO){
@@ -95,62 +67,20 @@ public class EtapaService {
         etapaRepository.delete(etapaMapper.toEntity(this.getById(id)));
     }
 
-    private Etapa createEtapa(List<PessoaDTO> pessoas, List<EspacoDTO> espacos){
+    private List<Etapa> createEtapa(List<PessoaDTO> pessoas, EspacoDTO espaco, Integer numEtapa){
 
         List<Etapa> etapas = new ArrayList<>();
+        Etapa etapa = new Etapa();
 
-        int qtdPessoas = pessoas.size();
-        int qtdSala = 0;
-        int qtdCafe = 0;
-        int totalVagas = 0;
-
-        for(EspacoDTO sala : espacos){
-            if(sala.getSala()){
-                qtdSala++;
-                totalVagas+=sala.getLotacao();
-            }
-            else{
-                qtdCafe++;
+        while (espaco.getLotacao() > 0){
+            for (PessoaDTO pessoa : pessoas){
+                etapa.setEspaco(espacoMapper.toEntity(espaco));
+                etapa.setPessoa(pessoaMapper.toEntity(pessoa));
+                etapa.setNumeroEtapa(numEtapa);
+                etapas.add(etapa);
             }
         }
-
-        int pessoasSala = qtdPessoas / qtdSala;
-
-        //criando etapa 1
-        if(qtdPessoas > totalVagas){
-            throw new RegrasNegocioException("Capacidade de vagas insuficiente para total de pessoas cadastradas!");
-        }else if(qtdPessoas == totalVagas){
-            Etapa etapa = new Etapa();
-            for(PessoaDTO pessoaDTO : pessoas){
-                for(EspacoDTO espacoDTO : espacos){
-                    int vaga = espacoDTO.getLotacao();
-                    if(espacoDTO.getSala() && vaga > 0){
-
-                    }
-                }
-            }
-            /*for(EspacoDTO espaco : espacos){
-
-                while (espaco.getSala() && !espacos.isEmpty()){
-                    for(PessoaDTO pessoa : pessoas){
-                        if(vaga > 0) {
-                            etapa.setPessoa(pessoaMapper.toEntity(pessoa));
-                            etapa.setEspaco(espacoMapper.toEntity(espaco));
-                            etapa.setNumeroEtapa(1);
-                            etapas.add(etapa);
-                            vaga--;
-                        }else{
-                            vaga = espaco.getLotacao();
-                        }
-                    }
-                }
-            }*/
-        }
-
-        //Criando etapa 2
-
-
-        return null;
+        return etapas;
     }
 
 }
