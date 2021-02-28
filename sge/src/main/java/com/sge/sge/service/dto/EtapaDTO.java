@@ -13,6 +13,6 @@ public class EtapaDTO implements Serializable {
 
     private Integer espaco;
 
-    private String numeroEtapa;
+    private Integer numeroEtapa;
 
 }

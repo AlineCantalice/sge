@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SgeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SgeApplication.class, args);
+
+		System.out.println("Pode rodar assim");
+
+		//SpringApplication.run(SgeApplication.class, args);
 	}
 
 }
