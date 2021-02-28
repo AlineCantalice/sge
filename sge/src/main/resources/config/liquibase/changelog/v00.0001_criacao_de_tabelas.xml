@@ -51,7 +51,7 @@
             <column name="espaco_id" type="number">
                 <constraints nullable="false"/>
             </column>
-            <column name="numero_etapa" type="varchar(5)">
+            <column name="numero_etapa" type="number">
                 <constraints nullable="false"/>
             </column>
         </createTable>

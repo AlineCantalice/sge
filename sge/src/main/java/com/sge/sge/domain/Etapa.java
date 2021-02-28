@@ -26,6 +26,6 @@ public class Etapa implements Serializable {
     private Espaco espaco;
 
     @Column(name = "numero_etapa")
-    private String numeroEtapa;
+    private Integer numeroEtapa;
 
 }
